@@ -1,0 +1,6 @@
+== Elecpresi2SQL
+
+=== Exemple d'utilisation
+....
+./script/elecpresi2sql.py > data.sql
+....
