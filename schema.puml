@@ -1,0 +1,52 @@
+@startuml
+hide circle
+
+entity Election {
+    * id_election : VARCHAR
+    election_annee : VARCHAR
+    election_tour : VARCHAR
+    --
+    PK_ELECTION(id_election)
+}
+
+entity Circonscription {
+    * id_circ : VARCHAR
+    numpt : VARCHAR
+    nomdpt : VARCHAR
+    numcric : VARCHAR
+    inscrits : NUMBER
+    votants : NUMBER
+    exprimes : NUMBER
+    blancs_et_nuls : NUMBER
+    --
+    PK_CIRCONSCRIPTION(id_circ)
+}
+
+
+entity Candidat {
+    * id_candidat : VARCHAR
+    candidat_nom : VARCHAR
+    candidat_prenom : VARCHAR
+    --
+    PK_CANDIDAT(id_candidat)
+}
+
+entity Fait {
+    * id_election : VARCHAR
+    * id_circ : VARCHAR
+    * id_candidat : VARCHAR
+    nbvote : NUMBER
+    parti_politique : VARCHAR
+    --
+    PK_FAIT(id_election, id_circ, id_candidat)
+    --
+    FK_FAIT_ID_ELECTION REFERENCES Election(id_election)
+    FK_FAIT_ID_CIRC REFERENCES Circonscription(id_circ)
+    FK_FAIT_ID_CANDIDAT REFERENCES Candidat(id_candidat)
+}
+
+
+Fait }|.left> Election
+Fait }|.> Candidat
+Fait }|.right> Circonscription
+@enduml
