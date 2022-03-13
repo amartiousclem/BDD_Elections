@@ -1,0 +1,9 @@
+-- Nombre de votes par candidat par élection
+
+SELECT f.ID_ELECTION, f.ID_CANDIDAT, SUM(NBVOTE) as VOTES_POUR_CANDIDAT
+FROM
+    FAIT f,
+    ELECTION e
+WHERE
+    f.ID_ELECTION  = e.ELECTION_ID
+GROUP BY  ( f.ID_ELECTION, ID_CANDIDAT );
