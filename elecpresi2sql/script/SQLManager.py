@@ -6,6 +6,9 @@ class SQLManager:
     @staticmethod
     def _remove_tables_to_sql() -> str:
         return """
+        DROP MATERIALIZED VIEW """ + Config.MVIEW_INFOSELECTIONDPT + """;
+        DROP MATERIALIZED VIEW """ + Config.MVIEW_VOTESCANDIDATNATIONAL + """;
+        DROP MATERIALIZED VIEW """ + Config.MVIEW_INFOSELECTIONNATIONAL + """;
         DROP TABLE """ + Config.TABLE_CANDIDAT + """ CASCADE CONSTRAINTS; 
         DROP TABLE """ + Config.TABLE_ELECTION + """ CASCADE CONSTRAINTS; 
         DROP TABLE """ + Config.TABLE_CIRCONSCRIPTION + """ CASCADE CONSTRAINTS; 
@@ -98,5 +101,93 @@ class SQLManager:
         return result
 
     @staticmethod
+    def _mview_sql() -> str:
+        return """
+create materialized view """ + Config.MVIEW_INFOSELECTIONDPT + """
+refresh COMPLETE ON COMMIT
+as
+SELECT
+  ce.""" + Config.TABLE_ELECTION_ID + """ AS """+ Config.MVIEW_INFOSELECTIONDPT_IDELECTION +""",
+  ce.""" + Config.TABLE_ELECTION_ANNEE + """ AS """ +Config.MVIEW_INFOSELECTIONDPT_ELECTIONANNEE +""",
+  ce.""" + Config.TABLE_ELECTION_TOUR + """ AS """ + Config.MVIEW_INFOSELECTIONDPT_ELECTIONTOUR  + """,
+  ce.""" + Config.TABLE_CIRCONSCRIPTION_NUMDPT + """ AS """ + Config.MVIEW_INFOSELECTIONDPT_NUMDPT+""",
+  SUM(ce.""" + Config.TABLE_CIRCONSCRIPTION_EXPRIMES + """) - SUM(ce.""" + Config.TABLE_CIRCONSCRIPTION_BLANCSETNULS + """) AS """ + Config.MVIEW_INFOSELECTIONDPT_VOTESVALIDETOTAL+""", 
+  SUM(ce.""" + Config.TABLE_CIRCONSCRIPTION_BLANCSETNULS + """) as """ + Config.MVIEW_INFOSELECTIONDPT_BLANCSETNULTOTAL +""",
+  SUM(ce.""" + Config.TABLE_CIRCONSCRIPTION_EXPRIMES + """) as """ +Config.MVIEW_INFOSELECTIONDPT_VOTESTOTAL +""",
+  SUM(ce.""" + Config.TABLE_CIRCONSCRIPTION_INSCRITS + """) as """ + Config.MVIEW_INFOSELECTIONDPT_INSCRITSTOTAL +""",
+  (
+    SUM(ce.""" + Config.TABLE_CIRCONSCRIPTION_INSCRITS + """) - SUM(ce.""" + Config.TABLE_CIRCONSCRIPTION_EXPRIMES + """)
+  ) as """ + Config.MVIEW_INFOSELECTIONDPT_ABSTENTION +"""
+FROM
+  (
+    SELECT
+      DISTINCT c.*,
+      e.*
+    FROM
+      """ + Config.TABLE_FAIT + """ f,
+      """ + Config.TABLE_CIRCONSCRIPTION + """ c,
+      """ + Config.TABLE_ELECTION + """ e
+    WHERE
+      f.""" + Config.TABLE_FAIT_IDCIRCONSCRIPTION + """ = c.""" + Config.TABLE_CIRCONSCRIPTION_ID + """
+      AND f.""" + Config.TABLE_FAIT_IDELECTION + """ = e.""" + Config.TABLE_ELECTION_ID + """
+  ) ce
+GROUP BY
+  (
+    ce.""" + Config.TABLE_ELECTION_ID + """,
+    ce.""" + Config.TABLE_ELECTION_ANNEE + """,
+    ce.""" + Config.TABLE_ELECTION_TOUR + """,
+    ce.""" + Config.TABLE_CIRCONSCRIPTION_NUMDPT + """
+  );
+
+create materialized view """ + Config.MVIEW_INFOSELECTIONNATIONAL + """
+refresh COMPLETE ON COMMIT
+as
+SELECT
+""" + Config.MVIEW_INFOSELECTIONDPT_IDELECTION+""" AS id_election ,
+""" + Config.MVIEW_INFOSELECTIONDPT_ELECTIONANNEE +""" AS election_annee,
+""" + Config.MVIEW_INFOSELECTIONDPT_ELECTIONTOUR+"""  AS election_tour,
+SUM(""" + Config.MVIEW_INFOSELECTIONDPT_VOTESVALIDETOTAL+""") AS VOTES_VALIDE_TOTAL,
+SUM(""" +Config.MVIEW_INFOSELECTIONDPT_BLANCSETNULTOTAL +""") as BLANCS_ET_NULS_TOTAL,
+(SUM(""" + Config.MVIEW_INFOSELECTIONDPT_VOTESTOTAL+""") + SUM(""" + Config.MVIEW_INFOSELECTIONDPT_BLANCSETNULTOTAL+""")) as VOTES_TOTAL,
+SUM(""" + Config.MVIEW_INFOSELECTIONDPT_INSCRITSTOTAL+""") as INSCRITS_TOTAL,
+(SUM(""" + Config.MVIEW_INFOSELECTIONDPT_INSCRITSTOTAL+""") - (SUM(""" + Config.MVIEW_INFOSELECTIONDPT_VOTESTOTAL+""") + SUM(""" + Config.MVIEW_INFOSELECTIONDPT_BLANCSETNULTOTAL+"""))) as ABSTENTION
+FROM
+INFOS_ELECTIONS_DEPARTEMENT
+GROUP BY  (
+    """ +Config.MVIEW_INFOSELECTIONDPT_IDELECTION +""",
+    """ + Config.MVIEW_INFOSELECTIONDPT_ELECTIONANNEE+""" ,
+    """ + Config.MVIEW_INFOSELECTIONDPT_ELECTIONTOUR +"""
+    );
+
+
+
+create materialized view """ + Config.MVIEW_VOTESCANDIDATNATIONAL + """
+refresh COMPLETE ON COMMIT
+as
+SELECT
+       f.""" + Config.TABLE_FAIT_IDELECTION + """ as """ + Config.MVIEW_VOTESCANDIDATNATIONAL_IDELECTION + """,
+       e.""" + Config.TABLE_ELECTION_ANNEE + """ as """ + Config.MVIEW_VOTESCANDIDATNATIONAL_ANNEE + """,
+       e.""" + Config.TABLE_ELECTION_TOUR + """ as """ + Config.MVIEW_VOTESCANDIDATNATIONAL_TOUR + """,
+       f.""" + Config.TABLE_FAIT_IDCANDIDAT + """  as """ + Config.MVIEW_VOTESCANDIDATNATIONAL_IDCANDIDAT + """,
+       SUM(""" + Config.TABLE_FAIT_NBVOTE + """) as """ + Config.MVIEW_VOTESCANDIDATNATIONAL_VOTES + """
+FROM
+    """ + Config.TABLE_FAIT + """ f,
+    """ + Config.TABLE_ELECTION + """ e
+WHERE
+    f.""" + Config.TABLE_FAIT_IDELECTION + """  = e.""" + Config.TABLE_ELECTION_ID + """
+GROUP BY  (
+   f.""" + Config.TABLE_FAIT_IDELECTION + """,
+   """ + Config.TABLE_ELECTION_ANNEE + """,
+   """ + Config.TABLE_ELECTION_TOUR + """,
+   """ + Config.TABLE_FAIT_IDCANDIDAT + """
+)
+"""
+
+    @staticmethod
     def to_sql(faits):
-        return SQLManager._remove_tables_to_sql() + SQLManager._tables_to_sql() + SQLManager._data_to_sql(faits)
+        return (
+                SQLManager._remove_tables_to_sql()
+                + SQLManager._tables_to_sql()
+                + SQLManager._data_to_sql(faits)
+                + SQLManager._mview_sql()
+        )

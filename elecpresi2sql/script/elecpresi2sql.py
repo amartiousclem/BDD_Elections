@@ -20,8 +20,16 @@ files = [f for f in listdir(path)]
 faits = []
 
 def f(e: Election, x: pd.Series):
-    circ: Circonscription = Circonscription(e, x["Code département"], x['département'], x["circonscription"],
-                                            x["Inscrits"], x["Votants"], x["Exprimés"], x["Blancs et nuls"])
+    circ: Circonscription = Circonscription(
+        e,
+        str(x["Code département"]),
+        x['département'],
+        x["circonscription"],
+        x["Inscrits"],
+        x["Votants"],
+        x["Exprimés"],
+        x["Blancs et nuls"]
+    )
 
     votes = x.drop(
         ['Code département', 'département', 'circonscription', 'Inscrits', 'Votants', 'Exprimés', 'Blancs et nuls'])

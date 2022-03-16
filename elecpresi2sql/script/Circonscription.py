@@ -3,9 +3,9 @@ from Election import Election
 import string
 
 class Circonscription:
-    def __init__(self, election: Election, num_dpt: int, nom_dpt: str, num_circ: int, inscrits: int, votants: int,
+    def __init__(self, election: Election, num_dpt: str, nom_dpt: str, num_circ: int, inscrits: int, votants: int,
                  exprimes: int, blancs_et_nuls: int):
-        self.numDpt = num_dpt
+        self.numDpt = num_dpt.lstrip('0')
         self.election = election
         self.nomDpt = nom_dpt
         self.numCirc = num_circ
