@@ -104,7 +104,6 @@ class SQLManager:
     def _mview_sql() -> str:
         return """
 create materialized view """ + Config.MVIEW_INFOSELECTIONDPT + """
-refresh COMPLETE ON COMMIT
 as
 SELECT
   ce.""" + Config.TABLE_ELECTION_ID + """ AS """+ Config.MVIEW_INFOSELECTIONDPT_IDELECTION +""",
@@ -140,7 +139,6 @@ GROUP BY
   );
 
 create materialized view """ + Config.MVIEW_INFOSELECTIONNATIONAL + """
-refresh COMPLETE ON COMMIT
 as
 SELECT
 """ + Config.MVIEW_INFOSELECTIONDPT_IDELECTION+""" AS id_election ,
