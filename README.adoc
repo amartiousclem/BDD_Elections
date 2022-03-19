@@ -1,0 +1,11 @@
+= X2I1010 - Projet : Analyse des tendances politiques aux élections présidentielles de 1965 à 2017
+
+== Sources des données
+
+Les données proviennent des sources suivantes :
+
+* https://www.data.gouv.fr/fr/datasets/elections-presidentielles-1965-2012-1/ (Mis à jour le 13 février 2016)
+* https://www.data.gouv.fr/fr/datasets/election-presidentielle-des-23-avril-et-7-mai-2017-resultats-definitifs-du-1er-tour-par-bureaux-de-vote/ (Mis à jour le 27 avril 2017)
+* https://www.data.gouv.fr/fr/datasets/election-presidentielle-des-23-avril-et-7-mai-2017-resultats-definitifs-du-2nd-tour-par-bureaux-de-vote/ (Mis à jour le 11 mai 2017)
+
+Les fichiers ont été adaptées afin de correspondre à nos besoins.
