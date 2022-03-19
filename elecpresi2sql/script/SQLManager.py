@@ -13,6 +13,7 @@ class SQLManager:
         DROP TABLE """ + Config.TABLE_ELECTION + """ CASCADE CONSTRAINTS; 
         DROP TABLE """ + Config.TABLE_CIRCONSCRIPTION + """ CASCADE CONSTRAINTS; 
         DROP TABLE """ + Config.TABLE_FAIT + """ CASCADE CONSTRAINTS; 
+        DROP INDEX bitmap_Index_Fait_PP;
         """
 
     @staticmethod
@@ -71,6 +72,8 @@ class SQLManager:
             FOREIGN KEY (""" + Config.TABLE_FAIT_IDCIRCONSCRIPTION + """) REFERENCES """ + Config.TABLE_CIRCONSCRIPTION + """(""" + Config.TABLE_CIRCONSCRIPTION_ID + """),
             FOREIGN KEY (""" + Config.TABLE_FAIT_IDCANDIDAT + """) REFERENCES """ + Config.TABLE_CANDIDAT + """(""" + Config.TABLE_CANDIDAT_ID + """)
         );
+        
+        CREATE BITMAP INDEX bitmap_Index_Fait_PP ON """ + Config.TABLE_FAIT+"""(""" + Config.TABLE_FAIT_PARTI_POLITIQUE+""");
         """
 
         return results
