@@ -1,4 +1,10 @@
 EXECUTE ADMI21.electionpresi_pkg.set_val_in_context;
+/
+
+SELECT user from dual;
+SELECT sys_context('electionpresi_ctx','role') from dual;
+SELECT sys_context('electionpresi_ctx','candidat_id') from dual;
+/
 
 -- seul le compte de l'utilisateur
 select * from admi21.compte_candidat;
@@ -14,6 +20,6 @@ commit;
 select * from admi21.candidat WHERE CANDIDAT_PRENOM='0_PRENOM_UPDATED';
 
 -- parti politique modifiée uniquement pour le candidat courant
-update admi21.fait set PARTI_POLITIQUE='0_PP';
+update admi21.fait set PARTI_POLITIQUE='0_PPP';
 commit;
-SELECT DISTINCT ID_CANDIDAT FROM admi21.FAIT WHERE PARTI_POLITIQUE='0_PP';
+SELECT DISTINCT ID_CANDIDAT FROM admi21.FAIT WHERE PARTI_POLITIQUE='0_PPP';
