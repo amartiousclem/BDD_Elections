@@ -9,3 +9,7 @@ Les données proviennent des sources suivantes :
 * https://www.data.gouv.fr/fr/datasets/election-presidentielle-des-23-avril-et-7-mai-2017-resultats-definitifs-du-2nd-tour-par-bureaux-de-vote/ (Mis à jour le 11 mai 2017)
 
 Les fichiers ont été adaptés afin de correspondre à nos besoins.
+
+== Licence
+
+https://spdx.org/licenses/ODbL-1.0.html#licenseText
