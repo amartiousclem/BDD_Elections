@@ -1,13 +1,13 @@
--- Evolution du nombre d'inscrits dans le département 35
+-- Evolution du nombre d'inscrits dans tous les départements
 
 SELECT
 t.ELECTION_ANNEE,
 t.NUMDPT,
 (t.INSCRITS_TOTAL),
-LAG((t.INSCRITS_TOTAL),1) over (ORDER BY t.NUMDPT) as inscrits_previous_year
+LAG((t.INSCRITS_TOTAL),1) over (ORDER BY t.NUMDPT) as inscrits_previous_year,
+((t.INSCRITS_TOTAL) - LAG((t.INSCRITS_TOTAL),1) over (PARTITION BY t.NUMDPT ORDER BY t.NUMDPT)) as diff
 FROM
 INFOS_ELECTIONS_DEPARTEMENT t
 WHERE
 t.ELECTION_TOUR = 1
-AND t.NUMDPT = '35'
 ORDER BY t.NUMDPT, t.ELECTION_ANNEE;
