@@ -1,5 +1,14 @@
 = X2I1010 - Projet : Analyse des tendances politiques aux élections présidentielles de 1965 à 2017
 
+== Intégration des données
+
+La transformation des données brut en format SQL est réalisé grâce au script Python elecpresi2sql.
+Pour plus d'information sur la génération du SQL, allez dans le dossier elecpresi2sql puis suivez les instructions du README
+
+== Droits d'accès
+Pour ajouter les droits d'accès à la base de données, utilisez le script VPD disponible dans le dossier VPD.
+Pour tester les droits d'accès à la base de données, utilisez le script TEST_VPD disponible dans le dossier VPD.
+
 == Sources des données
 
 Les données proviennent des sources suivantes :
