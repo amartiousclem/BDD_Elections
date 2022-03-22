@@ -1,6 +1,10 @@
-== Elecpresi2SQL
+= Elecpresi2SQL
 
-=== Exemple d'utilisation
+Un script Python permettant de transformer les données bruts des élections présidentielles (disponible dans le dossier data) en script SQL.
+
+== Exemple d'utilisation
+
+Pour générer le fichier SQL gérérant les tables et vues, et insérant les données, utilez la commande suivante 
 ....
 ./script/elecpresi2sql.py > data.sql
 ....
