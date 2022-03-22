@@ -4,7 +4,7 @@ Un script Python permettant de transformer les données bruts des élections pr�
 
 == Exemple d'utilisation
 
-Pour générer le fichier SQL gérérant les tables et vues, et insérant les données, utilez la commande suivante 
+Pour générer le fichier SQL gérant les tables et vues, et insérant les données, utilisez la commande suivante :
 ....
 ./script/elecpresi2sql.py > data.sql
 ....
