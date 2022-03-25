@@ -1,5 +1,12 @@
 = X2I1010 - Projet : Analyse des tendances politiques aux élections présidentielles de 1965 à 2017
 
+== Contributeurs
+
+DELI Dro Kieu
+GEORGES Thomas
+GICQUEL Mathieu
+TIOUS Amar
+
 == Intégration des données
 
 La transformation des données brut en format SQL est réalisé grâce au script Python elecpresi2sql.
