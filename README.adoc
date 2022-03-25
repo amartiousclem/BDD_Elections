@@ -2,10 +2,10 @@
 
 == Contributeurs
 
-DELI Dro Kieu
-GEORGES Thomas
-GICQUEL Mathieu
-TIOUS Amar
+DELI Dro Kieu \n
+GEORGES Thomas \n
+GICQUEL Mathieu \n
+TIOUS Amar \n
 
 == Intégration des données
 
